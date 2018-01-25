@@ -1,15 +1,19 @@
+#!/bin/bash
+
 file="sysInfo.txt"
 if [ -f "$file" ]
 then
 	rm $file
 fi
 
-printf "%s%s\n" "Username=" $(id -u -n) > $file
+printf "User Information:\n" > $file
+id >> $file
+printf "\nOS Information:\n" >> $file
+cat /etc/*-release >> $file
+printf "\nKernel Information:\n" >> $file
+cat /proc/version >> $file
+printf "\nSystem Architecture Information:\n" >> $file
+lscpu >> $file
+printf "\nFile System Memory Information:\n" >> $file
+df -h >> $file
 
-printf "%s\n" $(cat /etc/*-release | grep -i "DISTRIB_ID") >> $file
-
-printf "%s\n" $(cat /etc/*-release | grep -i "VERSION_ID") >> $file
-
-printf "%s " $(cat /proc/version | grep -i "version") >> $file
-
-printf "\n%s" $(lscpu | grep -i "Architecture") >> $file
